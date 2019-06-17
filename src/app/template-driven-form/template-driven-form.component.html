@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div id="user-data" ngModelGroup="userData">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="please enter your name"
+            name="username"
+            ngModel
+            required
+            #username="ngModel"
+          />
+          <span class="help-block" *ngIf="!username.valid && username.touched"
+            >name is required</span
+          >
+        </div>
+        <button
+          class="btn btn-default"
+          type="button"
+          (click)="suggestUserName()"
+        >
+          Suggest an Username
+        </button>
+        <div class="form-group">
+          <label for="email">Mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="please enter your email"
+            name="email"
+            ngModel
+            required
+            email
+            #email="ngModel"
+          />
+          <span class="help-block" *ngIf="!email.valid && email.touched"
+            >Please enter a valid email</span
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="secret">Secret Questions</label>
+        <select id="secret" class="form-control" name="secret" [ngModel]="''">
+          <option value="">Please choose your secret</option>
+          <option value="pet">Your first Pet?</option>
+          <option value="teacher">Your first teacher?</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input type="radio" name="gender" ngModel value="male" required />
+            <span>Male</span>
+          </label>
+          <label>
+            <input type="radio" name="gender" ngModel value="female" required />
+            <span>Female</span>
+          </label>
+        </div>
+      </div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!signForm.valid"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
