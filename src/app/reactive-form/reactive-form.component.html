@@ -11,19 +11,23 @@
             formControlName="username"
             placeholder="please enter your name"
           />
-          <span
+          <div
             class="help-block"
             *ngIf="
               !signForm.get('userData.username').valid &&
               signForm.get('userData.username').touched
             "
           >
-            name is required</span
-          >
-          <span
-            *ngIf="signForm.get('userData.username').errors['isForbiddenName']"
-            >name is invalid</span
-          >
+            <span *ngIf="signForm.get('userData.username').errors['required']"
+              >name is requierd</span
+            >
+            <span
+              *ngIf="
+                signForm.get('userData.username').errors['isForbiddenName']
+              "
+              >name is invalid</span
+            >
+          </div>
         </div>
         <button class="btn btn-default" type="button">
           Suggest an Username
@@ -37,14 +41,22 @@
             formControlName="email"
             placeholder="please enter your email"
           />
-          <span
+          <div
             class="help-block"
             *ngIf="
               !signForm.get('userData.email').valid &&
               signForm.get('userData.email').touched
             "
-            >enter a valid email</span
           >
+            <span *ngIf="signForm.get('userData.email').errors['required']">
+              email is required
+            </span>
+            <span
+              *ngIf="signForm.get('userData.email').errors['isForbiddenEmail']"
+            >
+              email is invalid
+            </span>
+          </div>
         </div>
       </div>
       <div class="form-group">

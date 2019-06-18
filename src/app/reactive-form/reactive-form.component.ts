@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reactive-form',
@@ -19,14 +20,17 @@ export class ReactiveFormComponent implements OnInit {
 
   ngOnInit() {
     const controls = this.foodsList.map(control => new FormControl(false));
-    console.log(controls);
     this.signForm = new FormGroup({
       userData: new FormGroup({
         username: new FormControl(null, [
           Validators.required,
           this.isForbiddenNames.bind(this)
         ]),
-        email: new FormControl(null, [Validators.required, Validators.email])
+        email: new FormControl(
+          null,
+          [Validators.required, Validators.email],
+          this.isForbiddenEmails
+        )
       }),
       foods: new FormArray(controls),
       secret: new FormControl(''),
@@ -34,7 +38,12 @@ export class ReactiveFormComponent implements OnInit {
       hobbies: new FormArray([])
     });
 
-    console.log(this.signForm.get('foods'));
+    // this.signForm.valueChanges.subscribe(value => {
+    //   console.log(value);
+    // });
+    // this.signForm.statusChanges.subscribe(status => {
+    //   console.log(status);
+    // });
   }
 
   onSubmit(): void {
@@ -56,5 +65,18 @@ export class ReactiveFormComponent implements OnInit {
       return { isForbiddenName: true };
     }
     return null;
+  }
+
+  // make an http request to get validate
+  isForbiddenEmails(control: FormControl): Observable<any> | Promise<any> {
+    const emailValid = new Promise<any>((resolve, reject) => {
+      if (control.value === 'test@test.com') {
+        return resolve({ isForbiddenEmail: true });
+      } else {
+        return resolve(null);
+      }
+    });
+
+    return emailValid;
   }
 }
