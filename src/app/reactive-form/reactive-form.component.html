@@ -17,7 +17,12 @@
               !signForm.get('userData.username').valid &&
               signForm.get('userData.username').touched
             "
-            >name is required</span
+          >
+            name is required</span
+          >
+          <span
+            *ngIf="signForm.get('userData.username').errors['isForbiddenName']"
+            >name is invalid</span
           >
         </div>
         <button class="btn btn-default" type="button">
@@ -44,14 +49,14 @@
       </div>
       <div class="form-group">
         <label>Favorite foods</label>
-        <div>
+        <div formArrayName="foods">
           <label
-            *ngFor="let food of foodsArray.controls; let i = index"
+            *ngFor="let food of signForm.get('foods').controls; let i = index"
           >
             <input
               type="checkbox"
               [value]="foodsList[i].value"
-              formControlName="food"
+              [formControlName]="i"
             />
             {{ foodsList[i].label }}
           </label>

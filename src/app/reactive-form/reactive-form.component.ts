@@ -13,6 +13,7 @@ export class ReactiveFormComponent implements OnInit {
     { label: 'Bread', value: 'bread' },
     { label: 'Sugar', value: 'sugar' }
   ];
+  forbiddenNames = ['Anna', 'Justin'];
 
   constructor() {}
 
@@ -21,7 +22,10 @@ export class ReactiveFormComponent implements OnInit {
     console.log(controls);
     this.signForm = new FormGroup({
       userData: new FormGroup({
-        username: new FormControl(null, Validators.required),
+        username: new FormControl(null, [
+          Validators.required,
+          this.isForbiddenNames.bind(this)
+        ]),
         email: new FormControl(null, [Validators.required, Validators.email])
       }),
       foods: new FormArray(controls),
@@ -38,12 +42,19 @@ export class ReactiveFormComponent implements OnInit {
   }
 
   get foodsArray(): FormArray {
-    return (<FormArray>this.signForm.get('foods'));
+    return <FormArray>this.signForm.get('foods');
   }
 
   onAddHobby(): void {
     (<FormArray>this.signForm.get('hobbies')).push(
       new FormControl(null, Validators.required)
     );
+  }
+
+  isForbiddenNames(control: FormControl): { [key: string]: boolean } {
+    if (this.forbiddenNames.includes(control.value)) {
+      return { isForbiddenName: true };
+    }
+    return null;
   }
 }
